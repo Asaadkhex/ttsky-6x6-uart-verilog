@@ -225,8 +225,8 @@ module tt_um_Asaadkhex_6x6u (
   );  
   assign uio_out = 0;
   assign uio_oe  = 0;
-  assign uio_oe[0]  = 0;
-  assign uio_oe[7]  = 0;
+  assign uio_out [0]  = 0;
+  assign uio_out [7]  = 0;
 
   // List all unused inputs to prevent warnings
     wire _unused = &{ena, clk, rst_n, ui_in[0], ui_in[7], 1'b0};
