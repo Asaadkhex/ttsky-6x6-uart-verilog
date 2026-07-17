@@ -215,12 +215,12 @@ module tt_um_Asaadkhex_6x6u (
   //assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
   switch6x6_nand switch6x6 (
     .x  (ui_in[6:1]),
-    .sel0  (3'b000),
-    .sel1  (3'b000),
-    .sel2  (3'b000),
-    .sel3  (3'b000),
-    .sel4  (3'b000),
-    .sel5  (3'b000),
+    .sel0  (3'b010),
+    .sel1  (3'b010),
+    .sel2  (3'b010),
+    .sel3  (3'b010),
+    .sel4  (3'b010),
+    .sel5  (3'b010),
     .y  (uo_out[6:1])
   );  
 
@@ -228,7 +228,6 @@ module tt_um_Asaadkhex_6x6u (
   assign uio_out = 0;
   assign uio_oe  = 0;
   assign uo_out [0]  = 0;
-    assign uo_out [1]  = 1'b1;
   assign uo_out [7]  = 0;
 
   // List all unused inputs to prevent warnings
