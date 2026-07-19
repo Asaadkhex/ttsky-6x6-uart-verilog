@@ -216,7 +216,7 @@ module tt_um_Asaadkhex_6x6u (
   switch6x6_nand switch6x6 (
     .x  (ui_in[6:1]),
     .sel0  (3'b111),
-    .sel1  (3'b111),
+    .sel1  (3'b000),
     .sel2  (3'b000),
     .sel3  (3'b000),
     .sel4  (3'b000),
