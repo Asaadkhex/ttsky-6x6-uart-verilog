@@ -318,8 +318,8 @@ module tt_um_Asaadkhex_6x6u (
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 8'b0;
 	assign uio_oe  = 8'b0;
-	assign uo_out[6]  = 0'b0;
-	assign uo_out[7]  = 0'b0;
+	assign uo_out[6]  = 1'b0;
+	assign uo_out[7]  = 1'b0;
 	
 	// List all unused inputs to prevent warnings
 	wire _unused = &{ena, uio_in, 1'b0};	
