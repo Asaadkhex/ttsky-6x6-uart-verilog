@@ -134,10 +134,7 @@ class TT6x6TB:
 
             # DUT samples serial data on rising clock edge.
             await RisingEdge(self.dut.clk)
-
-        # Return serial-data input low.
-        await FallingEdge(self.dut.clk)
-        self.set_ui_bit(DATA_IN_BIT, 0)
+            self.set_ui_bit(DATA_IN_BIT, 0)
 
     async def latch_outputs(self) -> None:
         """
