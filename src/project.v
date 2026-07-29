@@ -266,7 +266,7 @@ endmodule
 // =============================================================================
 module tt_um_Asaadkhex_6x6u (
     input  wire [7:0] ui_in,    // Dedicated inputs
-    output reg [7:0] uo_out,   // Dedicated outputs
+    output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
     output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
@@ -281,11 +281,12 @@ module tt_um_Asaadkhex_6x6u (
 	reg  [2:0] out4_sel;
 	reg  [2:0] out5_sel;
 	reg  [2:0] out6_sel;
-
+	reg [7:0] uo_out_reg;	// internal register to drive output
+	
     // Reset and disconnect all outputs when starting
 	always @(posedge clk or posedge rst_n) begin
 		if (!rst_n) begin
-	        uo_out <= 8'b0; // Resets the output register to zero
+	        uo_out_reg <= 8'b0; // Resets the output register to zero
 			out1_sel <= 3'b111;	// Disconnect all outputs
 			out2_sel <= 3'b111;
 			out3_sel <= 3'b111;
@@ -321,6 +322,9 @@ module tt_um_Asaadkhex_6x6u (
 		.y  (uo_out[5:0])
 	);  
 
+	// Continuously bridge the output register to the output wire
+    assign uo_out = uo_out_reg;
+	
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 0;
 	assign uio_oe  = 0;
