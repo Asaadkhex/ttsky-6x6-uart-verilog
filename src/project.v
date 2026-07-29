@@ -293,7 +293,7 @@ module tt_um_Asaadkhex_6x6u (
 	end
 
 	// Continuously bridge the output register to the output wire
-    assign uo_out = uo_out_reg;
+    //assign uo_out = uo_out_reg;
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
