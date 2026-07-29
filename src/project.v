@@ -284,7 +284,7 @@ module tt_um_Asaadkhex_6x6u (
 
     // Make sure all outputs are zero when starting
     initial begin
-        assign u0_out = 0;
+        assign uo_out = 0;
     end
 
 	
