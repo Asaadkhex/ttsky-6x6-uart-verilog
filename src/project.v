@@ -239,19 +239,18 @@ module shift_register_18bit (
             var5 <= 3'b000;
         end
         else begin
-
-            // Transfer the current 18-bit shift-register contents
-            // into six independent 3-bit variables.
-            if (latch) begin
-                var0 = shift_reg[2:0];
-                var1 = shift_reg[5:3];
-                var2 = shift_reg[8:6];
-                var3 = shift_reg[11:9];
-                var4 = shift_reg[14:12];
-                var5 = shift_reg[17:15];
-		// reset the shift register
-		shift_reg = 18'b0;
-	    end
+			// Transfer the current 18-bit shift-register contents
+			// into six independent 3-bit variables.
+			if (latch) begin
+				var0 <= shift_reg[2:0];
+				var1 <= shift_reg[5:3];
+				var2 <= shift_reg[8:6];
+				var3 <= shift_reg[11:9];
+				var4 <= shift_reg[14:12];
+				var5 <= shift_reg[17:15];
+				// reset the shift register
+				shift_reg <= 18'b0;
+			end
 	    else begin
             	// Shift toward MSB; newest bit enters bit 0.
             	shift_reg <= {shift_reg[16:0], data_in};
@@ -285,8 +284,6 @@ module tt_um_Asaadkhex_6x6u (
 	wire  [2:0] out4_sel;
 	wire  [2:0] out5_sel;
 	wire  [2:0] out6_sel;
-	// Declare output wires for internal combinational logic
-	wire [7:0] uo_out_val;
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
@@ -322,8 +319,8 @@ module tt_um_Asaadkhex_6x6u (
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 8'b0;
 	assign uio_oe  = 8'b0;
-	assign uo_out[6]  = 1'b0;
-	assign uo_out[7]  = 1'b0;
+	//assign uo_out[6]  = 1'b0;
+	//assign uo_out[7]  = 1'b0;
 	
 	// List all unused inputs to prevent warnings
 	wire _unused = &{ena, uio_in, 1'b0};	
