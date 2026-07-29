@@ -30,7 +30,7 @@ module mux6_nand (
     input  wire       d4,
     input  wire       d5,
     input  wire [2:0] sel,
-    output reg       y
+    output wire       y
 );
     // Shared select inversions.
     wire sel0_n;
@@ -126,7 +126,7 @@ module switch6x6_nand (
     input  wire [2:0] sel3,
     input  wire [2:0] sel4,
     input  wire [2:0] sel5,
-    output reg [5:0] y
+    output wire [5:0] y
 );
     mux6_nand u_output0 (
         .d0  (x[0]),
@@ -313,7 +313,7 @@ module tt_um_Asaadkhex_6x6u (
 	// Force uo_out to zero using rst_n combinational gating
     // If rst_n is 0 (low), uo_out becomes exactly 0 immediately.
     // If rst_n is 1 (high), uo_out reflects your logic.
-    assign uo_out = rst_n ? internal_logic_result : 8'b0;
+    assign uo_out = rst_n ? uo_out_val : 8'b0;
 	
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 8'b0;
