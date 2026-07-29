@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Your Name
+ * Copyright (c) 2026 Asaad Kaadan
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -229,28 +229,32 @@ module shift_register_18bit (
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            shift_reg <= 18'b1;
-			// Disconnect all outputs
-            var0 <= 3'b111;
-            var1 <= 3'b111;
-            var2 <= 3'b111;
-            var3 <= 3'b111;
-            var4 <= 3'b111;
-            var5 <= 3'b111;
+            shift_reg <= 18'b0;
+	// Disconnect all outputs
+            var0 <= 3'b000;
+            var1 <= 3'b000;
+            var2 <= 3'b000;
+            var3 <= 3'b000;
+            var4 <= 3'b000;
+            var5 <= 3'b000;
         end
         else begin
-            // Shift toward MSB; newest bit enters bit 0.
-            shift_reg <= {shift_reg[16:0], data_in};
 
             // Transfer the current 18-bit shift-register contents
             // into six independent 3-bit variables.
             if (latch) begin
-                var0 <= shift_reg[2:0];
-                var1 <= shift_reg[5:3];
-                var2 <= shift_reg[8:6];
-                var3 <= shift_reg[11:9];
-                var4 <= shift_reg[14:12];
-                var5 <= shift_reg[17:15];
+                var0 = shift_reg[2:0];
+                var1 = shift_reg[5:3];
+                var2 = shift_reg[8:6];
+                var3 = shift_reg[11:9];
+                var4 = shift_reg[14:12];
+                var5 = shift_reg[17:15];
+		// reset the shift register
+		shift_reg = 18'b0;
+	    end
+	    else begin
+            	// Shift toward MSB; newest bit enters bit 0.
+            	shift_reg <= {shift_reg[16:0], data_in};
             end
         end
     end
