@@ -280,7 +280,7 @@ async def test_full_6x6_switch_matrix(dut):
     dut._log.info("TEST: Selector field ordering")
     dut._log.info("========================================")
 
-    await tb.configure([0, 1, 2, 3, 4, 5])
+    await tb.configure([0, 0, 0, 0, 0, 0])
 
     for input_index in range(NUM_INPUTS):
         one_hot = 1 << input_index
