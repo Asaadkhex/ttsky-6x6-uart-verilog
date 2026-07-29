@@ -196,6 +196,70 @@ module switch6x6_nand (
 endmodule
 
 // =============================================================================
+// 18-bit serial-in shift register with six 3-bit latched outputs
+//
+// Bit ordering:
+//   The newest serial bit shifted in appears at shift_reg[0].
+//   After 18 clocks, latch=1 captures:
+//     var0 = shift_reg[2:0]
+//     var1 = shift_reg[5:3]
+//     var2 = shift_reg[8:6]
+//     var3 = shift_reg[11:9]
+//     var4 = shift_reg[14:12]
+//     var5 = shift_reg[17:15]
+//
+// latch is sampled on the rising edge of clk.
+// Outputs remain unchanged while latch=0.
+// =============================================================================
+module shift_register_18bit (
+    input  wire       clk,
+    input  wire       rst_n,
+    input  wire       data_in,
+    input  wire       latch,
+
+    output reg  [2:0] var0,
+    output reg  [2:0] var1,
+    output reg  [2:0] var2,
+    output reg  [2:0] var3,
+    output reg  [2:0] var4,
+    output reg  [2:0] var5
+);
+
+    reg [17:0] shift_reg;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            shift_reg <= 18'b0;
+
+            var0 <= 3'b000;
+            var1 <= 3'b000;
+            var2 <= 3'b000;
+            var3 <= 3'b000;
+            var4 <= 3'b000;
+            var5 <= 3'b000;
+        end
+        else begin
+            // Shift toward MSB; newest bit enters bit 0.
+            shift_reg <= {shift_reg[16:0], data_in};
+
+            // Transfer the current 18-bit shift-register contents
+            // into six independent 3-bit variables.
+            if (latch) begin
+                var0 <= shift_reg[2:0];
+                var1 <= shift_reg[5:3];
+                var2 <= shift_reg[8:6];
+                var3 <= shift_reg[11:9];
+                var4 <= shift_reg[14:12];
+                var5 <= shift_reg[17:15];
+            end
+        end
+    end
+
+
+endmodule
+
+
+// =============================================================================
 // Tiny Tapeout Top Module.
 //
 // 
@@ -211,26 +275,46 @@ module tt_um_Asaadkhex_6x6u (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  
-  // Assign R1 on all outputs
-  switch6x6_nand switch6x6 (
-    .x  (ui_in[6:1]),
-    .sel0  (3'b111),
-    .sel1  (3'b000),
-    .sel2  (3'b000),
-    .sel3  (3'b000),
-    .sel4  (3'b000),
-    .sel5  (3'b000),
-    .y  (uo_out[6:1])
-  );  
+	wire  [2:0] out1_sel;
+	wire  [2:0] out2_sel;
+	wire  [2:0] out3_sel;
+	wire  [2:0] out4_sel;
+	wire  [2:0] out5_sel;
+	wire  [2:0] out6_sel;
+	
+	// Read the shift register input and parse control commands
+	shift_register_18bit shift_register (
+		.clk	(clk),
+		.rst_n	(rst_n),
+		.data_in(ui_in[6]),
+		.latch	(ui_in[7]),
+		.var0	(out1_sel),
+		.var1	(out2_sel),
+		.var2	(out3_sel),
+		.var3	(out4_sel),
+		.var4	(out5_sel),
+		.var5	(out6_sel)	
+	);
 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-  assign uo_out [0]  = 0;
-  assign uo_out [7]  = 0;
+	// Assign control commands for all switches
+	switch6x6_nand switch6x6 (
+		.x  (ui_in[5:0]),
+		.sel0  (out1_sel),
+		.sel1  (out2_sel),
+		.sel2  (out3_sel),
+		.sel3  (out4_sel),
+		.sel4  (out5_sel),
+		.sel5  (out6_sel),
+		.y  (uo_out[5:0])
+	);  
 
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, uio_in, ui_in[0], ui_in[7], 1'b0};
+	// All output pins must be assigned. If not used, assign to 0.
+	assign uio_out = 0;
+	assign uio_oe  = 0;
+	assign uo_out [0]  = 0;
+	assign uo_out [7]  = 0;
+
+	// List all unused inputs to prevent warnings
+	wire _unused = &{ena, uio_in, 1'b0};
 
 endmodule
