@@ -311,7 +311,7 @@ module tt_um_Asaadkhex_6x6u (
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 0;
 	assign uio_oe  = 0;
-	assign uo_out [0]  = 0;
+	assign uo_out [6]  = 0;
 	assign uo_out [7]  = 0;
 
 	// List all unused inputs to prevent warnings
