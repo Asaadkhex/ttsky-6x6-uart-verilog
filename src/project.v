@@ -281,13 +281,15 @@ module tt_um_Asaadkhex_6x6u (
 	wire  [2:0] out4_sel;
 	wire  [2:0] out5_sel;
 	wire  [2:0] out6_sel;
+	
+	// internal register to drive output
 	reg  [2:0] out1_sel_reg;
 	reg  [2:0] out2_sel_reg;
 	reg  [2:0] out3_sel_reg;
 	reg  [2:0] out4_sel_reg;
 	reg  [2:0] out5_sel_reg;
 	reg  [2:0] out6_sel_reg;
-	reg [7:0] uo_out_reg;	// internal register to drive output
+	reg [7:0] uo_out_reg;	
 	
     // Reset and disconnect all outputs when starting
 	always @(posedge clk or posedge rst_n) begin
@@ -305,11 +307,11 @@ module tt_um_Asaadkhex_6x6u (
 	// Continuously bridge the output register to the output wire
     assign uo_out = uo_out_reg;
 	assign out1_sel = out1_sel_reg;
-	assign out1_se2 = out1_se2_reg;
-	assign out1_se3 = out1_se3_reg;
-	assign out1_se4 = out1_se4_reg;
-	assign out1_se5 = out1_se5_reg;
-	assign out1_se6 = out1_se6_reg;
+	assign out2_sel = out2_sel_reg;
+	assign out3_sel = out3_sel_reg;
+	assign out4_sel = out4_sel_reg;
+	assign out5_sel = out5_sel_reg;
+	assign out6_sel = out6_sel_reg;
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
