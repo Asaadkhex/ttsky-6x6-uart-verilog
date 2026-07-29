@@ -284,6 +284,8 @@ module tt_um_Asaadkhex_6x6u (
 	wire  [2:0] out4_sel;
 	wire  [2:0] out5_sel;
 	wire  [2:0] out6_sel;
+	// Declare output wires for internal combinational logic
+	wire [5:0] uo_out_val;
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
@@ -314,13 +316,13 @@ module tt_um_Asaadkhex_6x6u (
 	// Force uo_out to zero using rst_n combinational gating
     // If rst_n is 0 (low), uo_out becomes exactly 0 immediately.
     // If rst_n is 1 (high), uo_out reflects your logic.
-    assign uo_out = rst_n ? uo_out_val : 8'b0;
+    assign uo_out[5:0] = rst_n ? uo_out_val[5:0] : 8'b0;
 	
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 8'b0;
 	assign uio_oe  = 8'b0;
-	//assign uo_out[6]  = 1'b0;
-	//assign uo_out[7]  = 1'b0;
+	assign uo_out[6]  = 1'b0;
+	assign uo_out[7]  = 1'b0;
 	
 	// List all unused inputs to prevent warnings
 	wire _unused = &{ena, uio_in, 1'b0};	
