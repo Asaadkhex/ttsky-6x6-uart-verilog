@@ -282,11 +282,18 @@ module tt_um_Asaadkhex_6x6u (
 	wire  [2:0] out5_sel;
 	wire  [2:0] out6_sel;
 
-    // Make sure all outputs are zero when starting
-    initial begin
-        assign uo_out = 0;
-    end
-
+    // Reset and disconnect all outputs when starting
+	always @(posedge clk or posedge rst) begin
+	    if ~(rst_n) begin
+	        uo_out <= 8'b0; // Resets the output register to zero
+			out1_sel <= 3'b111;
+			out2_sel <= 3'b111;
+			out3_sel <= 3'b111;
+			out4_sel <= 3'b111;
+			out5_sel <= 3'b111;
+			out6_sel <= 3'b111;
+	    end
+	end
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
