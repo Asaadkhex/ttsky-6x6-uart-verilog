@@ -30,7 +30,7 @@ module mux6_nand (
     input  wire       d4,
     input  wire       d5,
     input  wire [2:0] sel,
-    output wire       y
+    output reg       y
 );
     // Shared select inversions.
     wire sel0_n;
@@ -126,7 +126,7 @@ module switch6x6_nand (
     input  wire [2:0] sel3,
     input  wire [2:0] sel4,
     input  wire [2:0] sel5,
-    output wire [5:0] y
+    output reg [5:0] y
 );
     mux6_nand u_output0 (
         .d0  (x[0]),
@@ -281,19 +281,8 @@ module tt_um_Asaadkhex_6x6u (
 	wire  [2:0] out4_sel;
 	wire  [2:0] out5_sel;
 	wire  [2:0] out6_sel;
-	
-	// internal register to drive output
-	reg [7:0] uo_out_reg;	
-	
-    // Reset all outputs when starting
-	always @(posedge clk or posedge rst_n) begin
-		if (!rst_n) begin
-	        uo_out_reg <= 8'b0; // Resets the output register to zero
-	    end
-	end
-
-	// Continuously bridge the output register to the output wire
-    //assign uo_out = uo_out_reg;
+	// Declare output wires for internal combinational logic
+	wire [7:0] uo_out_val;
 	
 	// Read the shift register input and parse control commands
 	shift_register_18bit shift_register (
@@ -318,14 +307,21 @@ module tt_um_Asaadkhex_6x6u (
 		.sel3  (out4_sel),
 		.sel4  (out5_sel),
 		.sel5  (out6_sel),
-		.y  (uo_out[5:0])
+		.y  (uo_out_val[5:0])
 	);  
+
+	// Force uo_out to zero using rst_n combinational gating
+    // If rst_n is 0 (low), uo_out becomes exactly 0 immediately.
+    // If rst_n is 1 (high), uo_out reflects your logic.
+    assign uo_out = rst_n ? internal_logic_result : 8'b0;
 	
 	// All output pins must be assigned. If not used, assign to 0.
-	assign uio_out = 0;
-	assign uio_oe  = 0;
-
+	assign uio_out = 8'b0;
+	assign uio_oe  = 8'b0;
+	assign uo_out[6]  = 0'b0;
+	assign uo_out[7]  = 0'b0;
+	
 	// List all unused inputs to prevent warnings
-	wire _unused = &{ena, uio_in, 1'b0};
-
+	wire _unused = &{ena, uio_in, 1'b0};	
+	
 endmodule
