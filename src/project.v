@@ -316,7 +316,7 @@ module tt_um_Asaadkhex_6x6u (
 	// Force uo_out to zero using rst_n combinational gating
     // If rst_n is 0 (low), uo_out becomes exactly 0 immediately.
     // If rst_n is 1 (high), uo_out reflects your logic.
-    assign uo_out[5:0] = rst_n ? uo_out_val[5:0] : 8'b0;
+	assign uo_out[5:0] = rst_n ? uo_out_val[5:0] : 6'b0;
 	
 	// All output pins must be assigned. If not used, assign to 0.
 	assign uio_out = 8'b0;
