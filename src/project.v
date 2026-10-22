@@ -325,6 +325,6 @@ module tt_um_Asaadkhex_6x6u (
 	assign uo_out[7]  = 1'b0;
 	
 	// List all unused inputs to prevent warnings
-	wire _unused = &{ena, uio_in, 1'b0};	
+	//wire _unused = &{ena, uio_in, 1'b0};	
 	
 endmodule
